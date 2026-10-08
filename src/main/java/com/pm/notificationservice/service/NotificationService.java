@@ -1,6 +1,7 @@
 package com.pm.notificationservice.service;
 
 import com.pm.notificationservice.dto.NotificationPayload;
+import com.pm.notificationservice.singleton.NotificationManager;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -8,87 +9,42 @@ public class NotificationService {
 
     public void sendEmail(NotificationPayload payload) {
 
-        switch (payload.type()) {
+        NotificationManager notificationManager =
+                NotificationManager.getInstance();
+
+        String message = switch (payload.type()) {
 
             case ORDER_CREATED ->
-                    System.out.println(
-                            "ORDER CREATED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "ORDER CREATED EMAIL → " + payload.message();
 
             case ORDER_CANCELLED ->
-                    System.out.println(
-                            "ORDER CANCELLED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "ORDER CANCELLED EMAIL → " + payload.message();
 
             case PAYMENT_SUCCESS ->
-                    System.out.println(
-                            "PAYMENT SUCCESS EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "PAYMENT SUCCESS EMAIL → " + payload.message();
 
             case PAYMENT_FAILED ->
-                    System.out.println(
-                            "PAYMENT FAILED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "PAYMENT FAILED EMAIL → " + payload.message();
 
             case PASSWORD_RESET ->
-                    System.out.println(
-                            "PASSWORD RESET EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "PASSWORD RESET EMAIL → " + payload.message();
 
             case WELCOME ->
-                    System.out.println(
-                            "WELCOME EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "WELCOME EMAIL → " + payload.message();
 
             case SHIPPED ->
-                    System.out.println(
-                            "SHIPPED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "SHIPPED EMAIL → " + payload.message();
 
             case DELIVERED ->
-                    System.out.println(
-                            "DELIVERED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "DELIVERED EMAIL → " + payload.message();
 
             case RESERVATION_CREATED ->
-                    System.out.println(
-                            "RESERVATION CREATED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
+                    "RESERVATION CREATED EMAIL → " + payload.message();
 
             case RESERVATION_CANCELLED ->
-                    System.out.println(
-                            "RESERVATION CANCELLED EMAIL → "
-                                    + payload.email()
-                                    + " | "
-                                    + payload.message()
-                    );
-        }
+                    "RESERVATION CANCELLED EMAIL → " + payload.message();
+        };
+
+        notificationManager.send(payload.email(), message);
     }
 }
