@@ -5,59 +5,42 @@ import com.pm.notificationservice.dto.NotificationPayload;
 public abstract class NotificationTemplate {
 
     public final void sendEmail(NotificationPayload payload) {
-
-        validate(payload);
+        validatePayload(payload);
 
         String template = createTemplate();
 
-        String message = createMessage(payload);
-
-        printNotification(
-                template,
-                payload,
-                message
+        System.out.println(
+                template + " → "
+                        + payload.email() + " | "
+                        + payload.message()
         );
     }
 
-    protected void validate(NotificationPayload payload) {
+    protected abstract String createTemplate();
 
+    private void validatePayload(NotificationPayload payload) {
         if (payload == null) {
             throw new IllegalArgumentException(
-                    "Notification payload cannot be null"
+                    "Notification payload must not be null"
+            );
+        }
+
+        if (payload.type() == null) {
+            throw new IllegalArgumentException(
+                    "Notification type must not be null"
             );
         }
 
         if (payload.email() == null || payload.email().isBlank()) {
             throw new IllegalArgumentException(
-                    "Email cannot be empty"
+                    "Notification email must not be blank"
             );
         }
 
         if (payload.message() == null || payload.message().isBlank()) {
             throw new IllegalArgumentException(
-                    "Message cannot be empty"
+                    "Notification message must not be blank"
             );
         }
-    }
-
-    protected abstract String createTemplate();
-
-    protected String createMessage(NotificationPayload payload) {
-        return payload.message();
-    }
-
-    protected void printNotification(
-            String template,
-            NotificationPayload payload,
-            String message
-    ) {
-
-        System.out.println(
-                template
-                        + " EMAIL → "
-                        + payload.email()
-                        + " | "
-                        + message
-        );
     }
 }
