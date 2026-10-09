@@ -2,27 +2,19 @@ package com.pm.notificationservice.singleton;
 
 public class NotificationManager {
 
-    private static NotificationManager instance;
+    private static final NotificationManager INSTANCE =
+            new NotificationManager();
 
     private NotificationManager() {
     }
 
     public static NotificationManager getInstance() {
-
-        if (instance == null) {
-            instance = new NotificationManager();
-        }
-
-        return instance;
+        return INSTANCE;
     }
 
     public void send(String email, String message) {
-
         System.out.println(
-                "NotificationManager → "
-                        + email
-                        + " | "
-                        + message
+                "NotificationManager → " + email + " | " + message
         );
     }
 }
