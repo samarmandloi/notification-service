@@ -11,7 +11,7 @@ public class NotificationService {
     public void sendEmail(NotificationPayload payload) {
 
         NotificationHandler handler =
-                NotificationFactory.create(payload.type());
+                NotificationFactory.getHandler(payload.type());
 
         handler.send(payload);
     }
