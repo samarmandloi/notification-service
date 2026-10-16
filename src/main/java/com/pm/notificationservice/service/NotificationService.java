@@ -9,9 +9,8 @@ public class NotificationService {
 
     private final NotificationStrategyContext strategyContext;
 
-    public NotificationService() {
-        this.strategyContext =
-                new NotificationStrategyContext();
+    public NotificationService(NotificationStrategyContext strategyContext) {
+        this.strategyContext = strategyContext;
     }
 
     public void sendEmail(NotificationPayload payload) {

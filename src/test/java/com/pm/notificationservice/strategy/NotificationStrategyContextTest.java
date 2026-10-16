@@ -1,12 +1,24 @@
+
 package com.pm.notificationservice.strategy;
 
 import com.pm.notificationservice.dto.NotificationPayload;
 import com.pm.notificationservice.dto.NotificationType;
+import com.pm.notificationservice.strategy.template.DeliveredStrategy;
+import com.pm.notificationservice.strategy.template.OrderCancelledStrategy;
+import com.pm.notificationservice.strategy.template.OrderCreatedStrategy;
+import com.pm.notificationservice.strategy.template.PasswordResetStrategy;
+import com.pm.notificationservice.strategy.template.PaymentFailedStrategy;
+import com.pm.notificationservice.strategy.template.PaymentSuccessStrategy;
+import com.pm.notificationservice.strategy.template.ReservationCancelledStrategy;
+import com.pm.notificationservice.strategy.template.ReservationCreatedStrategy;
+import com.pm.notificationservice.strategy.template.ShippedStrategy;
+import com.pm.notificationservice.strategy.template.WelcomeStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -15,7 +27,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class NotificationStrategyContextTest {
 
     private final NotificationStrategyContext context =
-            new NotificationStrategyContext();
+            new NotificationStrategyContext(List.of(
+                    new OrderCreatedStrategy(),
+                    new OrderCancelledStrategy(),
+                    new PaymentSuccessStrategy(),
+                    new PaymentFailedStrategy(),
+                    new PasswordResetStrategy(),
+                    new WelcomeStrategy(),
+                    new ShippedStrategy(),
+                    new DeliveredStrategy(),
+                    new ReservationCreatedStrategy(),
+                    new ReservationCancelledStrategy()
+            ));
 
     private static final Map<NotificationType, String> EXPECTED_OUTPUTS =
             Map.of(
