@@ -1,3 +1,4 @@
+
 package com.pm.notificationservice.service;
 
 import com.pm.notificationservice.dto.NotificationPayload;
@@ -8,10 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationService {
 
-    public void sendEmail(NotificationPayload payload) {
+    private final NotificationFactory notificationFactory;
 
+    public NotificationService(NotificationFactory notificationFactory) {
+        this.notificationFactory = notificationFactory;
+    }
+
+    public void sendEmail(NotificationPayload payload) {
         NotificationHandler handler =
-                NotificationFactory.getHandler(payload.type());
+                notificationFactory.getHandler(payload.type());
 
         handler.send(payload);
     }

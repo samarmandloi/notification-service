@@ -12,8 +12,10 @@ import com.pm.notificationservice.factory.handler.ReservationCancelledHandler;
 import com.pm.notificationservice.factory.handler.ReservationCreatedHandler;
 import com.pm.notificationservice.factory.handler.ShippedHandler;
 import com.pm.notificationservice.factory.handler.WelcomeHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +40,24 @@ class NotificationFactoryTest {
             NotificationType.RESERVATION_CANCELLED, ReservationCancelledHandler.class
     );
 
+    private NotificationFactory notificationFactory;
+
+    @BeforeEach
+    void setUp() {
+        notificationFactory = new NotificationFactory(List.of(
+                new OrderCreatedHandler(),
+                new OrderCancelledHandler(),
+                new PaymentSuccessHandler(),
+                new PaymentFailedHandler(),
+                new PasswordResetHandler(),
+                new WelcomeHandler(),
+                new ShippedHandler(),
+                new DeliveredHandler(),
+                new ReservationCreatedHandler(),
+                new ReservationCancelledHandler()
+        ));
+    }
+
     @Test
     void shouldRegisterEveryNotificationType() {
         assertEquals(
@@ -50,7 +70,7 @@ class NotificationFactoryTest {
     void shouldReturnCorrectHandlerForEveryNotificationType() {
         for (var entry : EXPECTED_HANDLERS.entrySet()) {
             NotificationHandler handler =
-                    NotificationFactory.getHandler(entry.getKey());
+                    notificationFactory.getHandler(entry.getKey());
 
             assertNotNull(handler);
             assertInstanceOf(
@@ -64,10 +84,10 @@ class NotificationFactoryTest {
     @Test
     void shouldReturnSameHandlerInstanceForRepeatedCalls() {
         NotificationHandler first =
-                NotificationFactory.getHandler(NotificationType.WELCOME);
+                notificationFactory.getHandler(NotificationType.WELCOME);
 
         NotificationHandler second =
-                NotificationFactory.getHandler(NotificationType.WELCOME);
+                notificationFactory.getHandler(NotificationType.WELCOME);
 
         assertSame(first, second);
     }
@@ -76,7 +96,7 @@ class NotificationFactoryTest {
     void shouldRejectNullNotificationType() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> NotificationFactory.getHandler(null)
+                () -> notificationFactory.getHandler(null)
         );
     }
 }
